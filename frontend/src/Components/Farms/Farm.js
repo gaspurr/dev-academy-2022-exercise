@@ -48,9 +48,9 @@ function Farm() {
 
                     if (sensor === "rainFall" && value >= 0 && value <= 500) {
                         farm.push(data)
-                    } else if (sensor == "pH" && value >= 0 && value <= 14) {
+                    } else if (sensor === "pH" && value >= 0 && value <= 14) {
                         farm.push(data)
-                    } else if (sensor == "temperature" && value >= -50 && value <= 100) {
+                    } else if (sensor === "temperature" && value >= -50 && value <= 100) {
                         farm.push(data)
                     }
                 })
