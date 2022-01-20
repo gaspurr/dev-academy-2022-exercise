@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { parse } from "papaparse"
 import axios from "axios"
-import { Container, Box, Typography, TextField, Select, MenuItem, InputLabel, OutlinedInput } from "@mui/material"
+import { 
+    Container, 
+    Box, 
+    Typography, 
+    TextField, 
+    Select, 
+    MenuItem, 
+    InputLabel, 
+    OutlinedInput } from "@mui/material"
+import {Chart} from "react-chartjs-2"
 
 function Farm() {
 
@@ -61,8 +70,6 @@ function Farm() {
         console.log(farm)
     }
 
-
-
     //get all of the farms
     const farmFetch = async () => {
         await axios.get("http://localhost:8081/farms")
@@ -90,57 +97,59 @@ function Farm() {
     }, [])
 
     return (
-        <Container maxWidth="sm">
-            <Box>
-                <Typography component="h1"
-                    variant="h5"
-                    sx={{ textAlign: "center", margin: 3 }}
-                >
-                    Input a farm's CSV file
-                </Typography>
-                <InputLabel htmlFor="selector">Farm</InputLabel>
-                <Select
-                    label="Farms"
-                    variant="outlined"
-                    id="selector"
-                    input={<OutlinedInput name="Farm" />}
-                    defaultValue=""
-                    fullWidth
-                    onChange={handleChange}
+        <div>
+            <Container maxWidth="sm">
+                <Box>
+                    <Typography component="h1"
+                        variant="h5"
+                        sx={{ textAlign: "center", margin: 3 }}
+                    >
+                        Input a farm's CSV file
+                    </Typography>
+                    <InputLabel htmlFor="selector">Farm</InputLabel>
+                    <Select
+                        label="Farms"
+                        variant="outlined"
+                        id="selector"
+                        input={<OutlinedInput name="Farm" />}
+                        defaultValue=""
+                        fullWidth
+                        onChange={handleChange}
 
-                    sx={{ background: "#e3e3e3", marginBottom: 5 }}
-                >
-                    {menu.map(farm => {
-                        return (
-                            <MenuItem key={farm.id} value={farm.id} onChange={handleChange}>{farm.farmName}</MenuItem>
-                        )
-                    })}
+                        sx={{ background: "#e3e3e3", marginBottom: 5 }}
+                    >
+                        {menu.map(farm => {
+                            return (
+                                <MenuItem key={farm.id} value={farm.id} onChange={handleChange}>{farm.farmName}</MenuItem>
+                            )
+                        })}
 
-                </Select>
-                <TextField
-                    label="Drop it here"
-                    variant="outlined"
-                    fullWidth
-                    onDrop={handleDrop}
-                    onDragOver={(e) => {
-                        e.preventDefault()
-                    }}
-                    sx={{ background: "#e3e3e3" }}
-                />
-            </Box>
-            <Box>
-                {farm > 0 ? farm.map((farm) => (
-                    <li key={farm}>
-                        <ul>
-                            <strong>{farm.location}</strong>
-                            <p>{farm.datetime}</p>
-                            <p>{farm.sensorType}</p>
-                            <p>{farm.value}</p>
-                        </ul>
-                    </li>
-                )) : null}
-            </Box>
-        </Container>
+                    </Select>
+                    <TextField
+                        label="Drop it here"
+                        variant="outlined"
+                        fullWidth
+                        onDrop={handleDrop}
+                        onDragOver={(e) => {
+                            e.preventDefault()
+                        }}
+                        sx={{ background: "#e3e3e3" }}
+                    />
+                </Box>
+                <Box>
+                    {farm > 0 ? farm.map((farm) => (
+                        <li key={farm}>
+                            <ul>
+                                <strong>{farm.location}</strong>
+                                <p>{farm.datetime}</p>
+                                <p>{farm.sensorType}</p>
+                                <p>{farm.value}</p>
+                            </ul>
+                        </li>
+                    )) : null}
+                </Box>
+            </Container>
+        </div>
     )
 }
 

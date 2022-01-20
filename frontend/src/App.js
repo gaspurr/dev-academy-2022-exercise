@@ -6,6 +6,7 @@ import Signup from "./Components/Signup/Signup"
 import Farms from "./Components/Farms/Farm"
 import Navbar from "./Components/Navbar/Navbar"
 import DataVisualization from "./Components/Farms/DataVisualization"
+import Charts from "./Components/Farms/Charts"
 
 const App = () => {
     return (
@@ -14,10 +15,11 @@ const App = () => {
                 <Navbar />
                 <Routes>
                     <Route exact path="/" component={Login} element={<Login />} />
-                    <Route path="/farms/append" element={<Farms />} />
-                    <Route path="/signup" element={<Signup />} />
+                    <Route exact path="/farms/append" element={<Farms />} />
+                    <Route exact path="/signup" element={<Signup />} />
                     <Route path="*" element={<NoPage />} />
-                    <Route path="/farms" element={<DataVisualization />} />
+                    <Route exact path="/farms" element={<DataVisualization />} />
+                    <Route exact path="/farms/chart" element={<Charts />} />
                 </Routes>
             </BrowserRouter >
         </>

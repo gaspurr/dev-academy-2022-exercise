@@ -1,8 +1,19 @@
 .container {
     display: block;
     margin: auto;
-    width: 900px;
+    width: 1400px;
     text-align: center;
+}
+
+.content-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-container-chart {
+    min-width: 900px;
+    min-height: 600px;
+    margin-left: 20px;
 }
 
 /*table {

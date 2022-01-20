@@ -6,26 +6,27 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import WaterDrop from "./waterDrop.png"
 import RainFall from "./rainFall.png"
+import Chart from "./Charts"
 
 
 
 function DataVisualization() {
     const [farm, setFarm] = useState([])
     const [menu, setMenu] = useState([])
-    const [selection, setSelection] = useState('')
+    const [selection, setSelection] = useState(null)
     const [order, setOrder] = useState("ASC")
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(10)
 
     const classes = {
         table: {
-            minWidth: 650,
+            minWidth: 750,
             width: 1000,
         },
         tableContainer: {
             borderRadius: "15px",
             margin: "10px 15px",
-            maxWidth: "1200px"
+            maxWidth: "1200px",
         },
         tableHeaderCell: {
             fontWeight: "bold",
@@ -64,10 +65,7 @@ function DataVisualization() {
         setMenu([])
         await axios.get(`http://localhost:8081/farms`)
             .then(res => {
-
                 const result = res.data
-                console.log("all farms: " + JSON.stringify(result))
-
                 //extract names for the selection
                 for (var i in result) {
                     const farmName = result[i]["farmName"]
@@ -103,26 +101,25 @@ function DataVisualization() {
 
     //fetch a farm and it's data
     const fetchFarm = async (id) => {
-        await axios.get(`http://localhost:8081/farms/${id}`)
-            .then(res => {
-                setFarm([])
-                const results = res.data
-                console.log(results)
-                results["data"].forEach(row => {
-                    setFarm(prev => [...prev, row])
-                });
-            }).catch(e => {
-                console.log({ message: e })
-            })
+        if (selection != null) {
+            await axios.get(`http://localhost:8081/farms/${id}`)
+                .then(res => {
+                    setFarm([])
+                    const results = res.data
+                    results["data"].forEach(row => {
+                        setFarm(prev => [...prev, row])
+                    });
+                }).catch(e => {
+                    console.log({ message: e })
+                })
+        }
+
 
     }
 
     useEffect(() => {
         getAllFarms()
         fetchFarm(selection)
-
-
-
     }, [selection])
 
     return (
@@ -133,11 +130,14 @@ function DataVisualization() {
                 <Select
                     label="Farms"
                     variant="outlined"
-                    input={<Input />}
+                    input={<Input value={selection} />}
                     id="selector"
                     fullWidth
                     value={selection}
+                    defaultValue={""}
+                    name="Farms"
                     onChange={handleSelection}
+                    variant="outlined"
                     sx={{ background: "#e3e3e3", marginBottom: 5 }}
                 >
                     {menu.map((farm, index) => {
@@ -148,58 +148,66 @@ function DataVisualization() {
 
                 </Select>
             </div>
-            <TableContainer component={Paper} sx={classes.tableContainer}>
-                <Table className={classes.table} aria-label="sticky table">
-                    <TableHead sx={classes.tableHeaderCell}>
-                        <TableRow >
-                            <TableCell className={classes.tableCell} onClick={() => sorting("datetime")}>
-                                Date
-                                <ArrowDownwardOutlinedIcon />
-                            </TableCell>
-                            <TableCell onClick={() => sorting("sensorType")}>Sensor type
-                                <ArrowDownwardOutlinedIcon />
-                            </TableCell>
-                            <TableCell onClick={() => sorting("value")}>Value
-                                <ArrowDownwardOutlinedIcon />
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {farm.length > 0 ? farm.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, index) => (
-                                <TableRow key={index}>
-                                    <TableCell>{row.datetime}</TableCell>
-                                    <TableCell>{
-                                        row.sensorType === "rainFall" ? "Rainfall"
-                                            : row.sensorType === "pH" ? "PH"
-                                                : "Temperature"}
+            <div className="content-container">
+                <div>
+                    <TableContainer component={Paper} sx={classes.tableContainer}>
+                        <Table className={classes.table} aria-label="sticky table">
+                            <TableHead sx={classes.tableHeaderCell}>
+                                <TableRow >
+                                    <TableCell className={classes.tableCell} onClick={() => sorting("datetime")}>
+                                        Date
+                                        <ArrowDownwardOutlinedIcon />
                                     </TableCell>
-                                    <TableCell>
-                                        <Grid container>
-                                            <Grid item sm={6}>
-                                                {row.value}
-                                            </Grid>
-                                            <Grid item sm={2}>
-                                                {row.sensorType === "rainFall" ? <img src={RainFall} alt="Rainfall logo" style={{ width: "20px" }} />
-                                                    : row.sensorType === "pH" ? <img src={WaterDrop} alt="Ph logo" style={{ width: "20px" }} />
-                                                        : <ThermostatIcon sx={{ width: "20px" }} />}
-                                            </Grid>
-                                        </Grid>
+                                    <TableCell onClick={() => sorting("sensorType")}>Sensor type
+                                        <ArrowDownwardOutlinedIcon />
+                                    </TableCell>
+                                    <TableCell onClick={() => sorting("value")}>Value
+                                        <ArrowDownwardOutlinedIcon />
                                     </TableCell>
                                 </TableRow>
-                            )) : <h1>Loading...</h1>}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={farm.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+                            </TableHead>
+                            <TableBody>
+                                {farm.length > 0 ? farm.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{row.datetime}</TableCell>
+                                            <TableCell>{
+                                                row.sensorType === "rainFall" ? "Rainfall"
+                                                    : row.sensorType === "pH" ? "PH"
+                                                        : "Temperature"}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Grid container>
+                                                    <Grid item sm={6}>
+                                                        {row.value}
+                                                    </Grid>
+                                                    <Grid item sm={2}>
+                                                        {row.sensorType === "rainFall" ? <img src={RainFall} alt="Rainfall logo" style={{ width: "20px" }} />
+                                                            : row.sensorType === "pH" ? <img src={WaterDrop} alt="Ph logo" style={{ width: "20px" }} />
+                                                                : <ThermostatIcon sx={{ width: "20px" }} />}
+                                                    </Grid>
+                                                </Grid>
+                                            </TableCell>
+                                        </TableRow>
+                                    )) : <h1>Loading...</h1>}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={farm.length}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </div>
+
+                <Chart farmData={farm}/>
+            </div>
+
         </div>
     )
 }
