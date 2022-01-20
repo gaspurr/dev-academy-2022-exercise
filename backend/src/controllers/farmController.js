@@ -94,26 +94,6 @@ exports.getBySensorType = async (req, res) => {
     const { id } = req.params
 
     try {
-        /*const body = await Farm.find({
-            data: { $elemMatch: {sensorType: "temperature", value: "-8.0" }}
-        });*/
-
-        /*const body = await Farm.find({
-            _id: id
-        }).projection({ item: 1, status: 1, data: {$slice: -1}})
-
-        return res.status(200).json({
-            status: "success",
-            data: body
-        })*/
-
-        /*const body = await Farm.find({
-            "data.sensorType": "rainFall",
-            "data.value": {
-                "$gt": "1"
-            }
-        }, {"data.location": 0, "data.datetime": 0, "data.sensorType": 0})
-        res.status(200).json(body)*/
         const body = await Farm.aggregate([
             {"$unwind": "$data"},
             {"$group": {
@@ -126,6 +106,27 @@ exports.getBySensorType = async (req, res) => {
     } catch (e) {
         return res.status(400).send({ message: "Couldn't find any data" + e })
     }
+}
+
+//set farm's data to be zero
+exports.deleteAllDataFromFarm = async(req, res) => {
+    const {id}=req.params
+
+    try{
+        const body = await Farm.updateOne({
+            _id: id
+        },{
+            $set: {
+                "data": []
+            }
+        })
+
+        res.status(200).send({message: `Farm's ${id} data has been erased`})
+    }catch(e){
+        console.log(e)
+    }
+
+    
 }
 
 //Fetch farms by month

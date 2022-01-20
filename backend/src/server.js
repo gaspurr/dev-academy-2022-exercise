@@ -12,8 +12,8 @@ app.use(cors())
 app.use(express.json())
 
 
-app.use(bodyParser.json({extended: true}))
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json({limit: "2mb", extended: true}))
+app.use(bodyParser.urlencoded({limit: "2mb", extended: true}))
 
 app.use('/', userRoutes);
 app.use('/farms', farmRoutes)

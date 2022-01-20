@@ -28,7 +28,9 @@ function Charts(props) {
     const [temp, setTemp] = useState([])
 
     const farm = props.farmData
-    const getLabels = async(farm) => {
+
+    const getLabels = async (farm) => {
+
         setLabels([])
         setPh([])
         setRainfall([])
@@ -59,7 +61,6 @@ function Charts(props) {
 
     useEffect(() => {
         getLabels(farm)
-        console.log(temp, pH, rainfall)
     }, [])
 
     const data = {

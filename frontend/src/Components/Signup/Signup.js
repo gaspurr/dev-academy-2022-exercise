@@ -6,7 +6,6 @@ import axios from "axios"
 import { Container, Box, Typography, TextField, Button, Alert, Stack } from "@mui/material";
 
 const Signup = () => {
-    //const SignupState = useSelector(state => state.authReducer)
     const dispatch = useDispatch()
     const [error, setError] = useState('')
 
@@ -26,7 +25,6 @@ const Signup = () => {
         await axios.post("http://localhost:8081/Signup", SignupData)
             .then(res => {
                 if (res.data) {
-                    //dispatch(Signup(SignupData))
                     console.log(res.data.message)
                     //redirects to farms route
                     window.location.href = "/"
@@ -39,15 +37,6 @@ const Signup = () => {
             })
 
     }
-
-    /*if(redirect){
-        return(
-            <Routes>
-                <Route exact path="/home" />
-            </Routes>
-
-        )
-    }*/
 
 
     return (

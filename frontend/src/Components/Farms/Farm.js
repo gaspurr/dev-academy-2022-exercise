@@ -1,36 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import { parse } from "papaparse"
 import axios from "axios"
-import { 
-    Container, 
-    Box, 
-    Typography, 
-    TextField, 
-    Select, 
-    MenuItem, 
-    InputLabel, 
-    OutlinedInput } from "@mui/material"
-import {Chart} from "react-chartjs-2"
+import {
+    Container,
+    Box,
+    Typography,
+    TextField,
+    Select,
+    MenuItem,
+    InputLabel,
+    OutlinedInput,
+    Stack,
+    Alert
+} from "@mui/material"
 
 function Farm() {
 
     const [selection, setSelection] = useState('')
     const [menu, setMenu] = useState([])
     const [farm, setFarm] = useState([])
+    const [errors, setErrors] = useState(null)
 
     const handleChange = (e) => {
         e.preventDefault()
-
         setSelection(e.target.value)
-        console.log(selection)
     }
 
     const appendData = async (data, id) => {
         await axios.post(`http://localhost:8081/farms/add-data/${id}`, data)
             .then(res => {
                 console.log(res.data)
+                setErrors(null)
             }).catch(e => {
                 console.log({ message: e })
+                setErrors("Something critical happened")
             }
             )
     }
@@ -48,12 +51,12 @@ function Farm() {
                 const result = parse(data, { header: true })
                 const filteredData = result.data
 
-                /*console.log(filteredData)
-                const sensor = filteredData.sensorType
-                const value = filteredData.value*/
+                //I changed the body parses size to be 2000kb in the node_modules/body_parser
+                //Original was 100kb
                 filteredData.forEach((data) => {
                     let sensor = data.sensorType
                     let value = data.value
+                    setErrors("Appending to database...")
 
                     if (sensor === "rainFall" && value >= 0 && value <= 500) {
                         farm.push(data)
@@ -62,12 +65,12 @@ function Farm() {
                     } else if (sensor === "temperature" && value >= -50 && value <= 100) {
                         farm.push(data)
                     }
+                    console.log("appending")
                 })
                 appendData(farm, selection)
+                console.log("not appending")
             })
-
-
-        console.log(farm)
+        setErrors(null)
     }
 
     //get all of the farms
@@ -106,25 +109,26 @@ function Farm() {
                     >
                         Input a farm's CSV file
                     </Typography>
-                    <InputLabel htmlFor="selector">Farm</InputLabel>
-                    <Select
-                        label="Farms"
-                        variant="outlined"
-                        id="selector"
-                        input={<OutlinedInput name="Farm" />}
-                        defaultValue=""
-                        fullWidth
-                        onChange={handleChange}
-
-                        sx={{ background: "#e3e3e3", marginBottom: 5 }}
-                    >
-                        {menu.map(farm => {
-                            return (
-                                <MenuItem key={farm.id} value={farm.id} onChange={handleChange}>{farm.farmName}</MenuItem>
-                            )
-                        })}
-
-                    </Select>
+                        <TextField
+                            value={selection}
+                            select
+                            label="Farm"
+                            fullWidth
+                            renderValue={(p) => p}
+                            onChange={handleChange}
+                            sx={{ marginBottom: 5 }}
+                        >
+                            {menu.map((farm, index) => {
+                                return (
+                                    <MenuItem
+                                        key={index}
+                                        value={farm.id}
+                                    >
+                                        {farm.farmName}
+                                    </MenuItem>
+                                )
+                            })}
+                        </TextField>
                     <TextField
                         label="Drop it here"
                         variant="outlined"
@@ -134,19 +138,15 @@ function Farm() {
                             e.preventDefault()
                         }}
                         sx={{ background: "#e3e3e3" }}
+                        disabled
                     />
-                </Box>
-                <Box>
-                    {farm > 0 ? farm.map((farm) => (
-                        <li key={farm}>
-                            <ul>
-                                <strong>{farm.location}</strong>
-                                <p>{farm.datetime}</p>
-                                <p>{farm.sensorType}</p>
-                                <p>{farm.value}</p>
-                            </ul>
-                        </li>
-                    )) : null}
+                    {errors != null ? (
+                        <Stack sx={{ width: "100%" }} spacing={2}>
+                            <Alert severity="error" onClick={() => setErrors(null)}>
+                                {errors}
+                            </Alert>
+                        </Stack>
+                    ) : (null)}
                 </Box>
             </Container>
         </div>

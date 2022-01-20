@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
 import "./DataVisualization.css"
-import { Table, TableContainer, TableCell, Paper, TableBody, TableHead, TableRow, Grid, Select, Input, InputLabel, MenuItem, TablePagination } from "@mui/material"
+import {
+    Table,
+    TableContainer,
+    TableCell,
+    Paper,
+    TableBody,
+    TableHead,
+    TableRow, Grid,
+    InputLabel,
+    MenuItem,
+    TablePagination,
+    TextField
+} from "@mui/material"
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import WaterDrop from "./waterDrop.png"
@@ -127,18 +139,12 @@ function DataVisualization() {
             <h2>Data visualization</h2>
             <div>
                 <InputLabel htmlFor="selector">Select a farm</InputLabel>
-                <Select
-                    label="Farms"
-                    variant="outlined"
-                    input={<Input value={selection} />}
-                    id="selector"
-                    fullWidth
+                <TextField
                     value={selection}
-                    defaultValue={""}
-                    name="Farms"
+                    select
+                    label="Farm"
                     onChange={handleSelection}
-                    variant="outlined"
-                    sx={{ background: "#e3e3e3", marginBottom: 5 }}
+                    sx={{ marginBottom: 5, minWidth: "50%" }}
                 >
                     {menu.map((farm, index) => {
                         return (
@@ -146,7 +152,7 @@ function DataVisualization() {
                         )
                     })}
 
-                </Select>
+                </TextField>
             </div>
             <div className="content-container">
                 <div>
@@ -205,7 +211,7 @@ function DataVisualization() {
                     />
                 </div>
 
-                <Chart farmData={farm}/>
+                <Chart farmData={farm} />
             </div>
 
         </div>
