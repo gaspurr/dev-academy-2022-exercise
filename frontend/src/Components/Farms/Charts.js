@@ -26,6 +26,8 @@ function Charts(props) {
     const [pH, setPh] = useState([])
     const [rainfall, setRainfall] = useState([])
     const [temp, setTemp] = useState([])
+    const [beginning, setBeginning] = useState(0)
+    const [end, setEnd] = useState(20)
 
     const farm = props.farmData
 
@@ -38,13 +40,11 @@ function Charts(props) {
 
         try {
             await farm.forEach(row => {
-                setLabels(prev => [...prev, row.datetime])
+                setLabels(prev => [...prev, row.datetime.slice(0, 16)])
                 const type = row.sensorType
                 const value = parseFloat(row.value)
-                console.log(value)
                 if (type === "pH") {
                     setPh(prev => [...prev, value])
-                    console.log("d")
                 }
                 if (type === "rainFall") {
                     setRainfall(prev => [...prev, value])
@@ -59,27 +59,47 @@ function Charts(props) {
 
     }
 
+    const nextButton = async(e) => {
+        e.preventDefault()
+
+        const newBeginning = beginning + 10
+        const newEnding = end + 10
+        setEnd(newEnding)
+        setBeginning(newBeginning)
+
+        console.log(beginning)
+    }
+    const prevButton = async(e) => {
+        e.preventDefault()
+
+        const newBeginning = beginning - 10
+        const newEnding = end - 10
+        setEnd(newEnding)
+        setBeginning(newBeginning)
+        console.log(end)
+    }
+
     useEffect(() => {
         getLabels(farm)
-    }, [])
+    }, [props.farmData])
 
     const data = {
-        labels: labels,
+        labels: labels.slice(beginning, end),
         datasets: [{
             label: "Rainfall",
-            data: rainfall,
+            data: rainfall.slice(beginning, end),
             fill: false,
             backgroundColor: '#0071bd',
             borderColor: '#0071bd',
         }, {
             label: "Ph",
-            data: pH,
+            data: pH.slice(beginning, end),
             fill: false,
             backgroundColor: '#0071bd',
             borderColor: 'lightblue',
         }, {
             label: "Temperature",
-            data: temp,
+            data: temp.slice(beginning, end),
             fill: false,
             backgroundColor: '#0071bd',
             borderColor: 'red',
@@ -100,6 +120,11 @@ function Charts(props) {
 
     return (
         <div className="content-container-chart">
+            <div>
+                <button onClick={prevButton}>Left</button>
+                <button onClick={nextButton}>Right</button>
+            </div>
+
             <Line data={data} options={options} />
         </div>
     )
