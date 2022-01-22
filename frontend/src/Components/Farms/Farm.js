@@ -6,10 +6,7 @@ import {
     Box,
     Typography,
     TextField,
-    Select,
     MenuItem,
-    InputLabel,
-    OutlinedInput,
     Stack,
     Alert
 } from "@mui/material"
@@ -20,6 +17,7 @@ function Farm() {
     const [menu, setMenu] = useState([])
     const [farm, setFarm] = useState([])
     const [errors, setErrors] = useState(null)
+    const [appending, setAppending] = useState(false)
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -30,7 +28,7 @@ function Farm() {
         await axios.post(`http://localhost:8081/farms/add-data/${id}`, data)
             .then(res => {
                 console.log(res.data)
-                setErrors(null)
+                setErrors(res.data)
             }).catch(e => {
                 console.log({ message: e })
                 setErrors("Something critical happened")
@@ -48,15 +46,15 @@ function Farm() {
             .filter(file => file.type === "text/csv")
             .forEach(async (file) => {
                 const data = await file.text()
-                const result = parse(data, { header: true })
+                const result = parse(data, { header: true, dynamicTyping: true })
                 const filteredData = result.data
+                console.log(filteredData)
 
                 //I changed the body parses size to be 2000kb in the node_modules/body_parser
                 //Original was 100kb
                 filteredData.forEach((data) => {
                     let sensor = data.sensorType
-                    let value = data.value
-                    setErrors("Appending to database...")
+                    let value = parseFloat(data.value)
 
                     if (sensor === "rainFall" && value >= 0 && value <= 500) {
                         farm.push(data)
@@ -65,12 +63,19 @@ function Farm() {
                     } else if (sensor === "temperature" && value >= -50 && value <= 100) {
                         farm.push(data)
                     }
-                    console.log("appending")
+                    setAppending(true)
+                    setErrors("Appending to database...")
+
                 })
+
+                if (!appending) {
+                    setAppending(false)
+                    console.log(appending)
+                }
+
+                setErrors(null)
                 appendData(farm, selection)
-                console.log("not appending")
             })
-        setErrors(null)
     }
 
     //get all of the farms
@@ -97,7 +102,7 @@ function Farm() {
 
     useEffect(() => {
         farmFetch()
-    }, [])
+    }, [errors])
 
     return (
         <div>
@@ -109,26 +114,26 @@ function Farm() {
                     >
                         Input a farm's CSV file
                     </Typography>
-                        <TextField
-                            value={selection}
-                            select
-                            label="Farm"
-                            fullWidth
-                            renderValue={(p) => p}
-                            onChange={handleChange}
-                            sx={{ marginBottom: 5 }}
-                        >
-                            {menu.map((farm, index) => {
-                                return (
-                                    <MenuItem
-                                        key={index}
-                                        value={farm.id}
-                                    >
-                                        {farm.farmName}
-                                    </MenuItem>
-                                )
-                            })}
-                        </TextField>
+                    <TextField
+                        value={selection}
+                        select
+                        label="Farm"
+                        fullWidth
+                        renderValue={(p) => p}
+                        onChange={handleChange}
+                        sx={{ marginBottom: 5 }}
+                    >
+                        {menu.map((farm, index) => {
+                            return (
+                                <MenuItem
+                                    key={index}
+                                    value={farm.id}
+                                >
+                                    {farm.farmName}
+                                </MenuItem>
+                            )
+                        })}
+                    </TextField>
                     <TextField
                         label="Drop it here"
                         variant="outlined"
@@ -140,7 +145,7 @@ function Farm() {
                         sx={{ background: "#e3e3e3" }}
                         disabled
                     />
-                    {errors != null ? (
+                    {errors ? (
                         <Stack sx={{ width: "100%" }} spacing={2}>
                             <Alert severity="error" onClick={() => setErrors(null)}>
                                 {errors}

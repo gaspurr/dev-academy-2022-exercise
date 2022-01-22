@@ -88,20 +88,26 @@ exports.appendFarmData = async (req, res) => {
 
 }
 
-//Fetch farms by metric type
+//Fetch average rainfall amount
 exports.getBySensorType = async (req, res) => {
 
     const { id } = req.params
 
     try {
-        const body = await Farm.aggregate([
-            {"$unwind": "$data"},
-            {"$group": {
-                "_id": "rainFall",
-                "avgSize": {$avg: "$value"}
-            }}
-        ])
-        res.status(200).json(body)
+        const search = await Farm.aggregate([
+            {
+                $unwind: "$data"
+            },
+            {
+                $group: {
+                    _id: "$data.sensorType",
+                    avgValue: {
+                        $avg: "$data.value"
+                    }
+                }
+            }])
+
+        res.status(200).json(search)
 
     } catch (e) {
         return res.status(400).send({ message: "Couldn't find any data" + e })
@@ -109,24 +115,22 @@ exports.getBySensorType = async (req, res) => {
 }
 
 //set farm's data to be zero
-exports.deleteAllDataFromFarm = async(req, res) => {
-    const {id}=req.params
+exports.deleteAllDataFromFarm = async (req, res) => {
+    const { id } = req.params
 
-    try{
+    try {
         const body = await Farm.updateOne({
             _id: id
-        },{
+        }, {
             $set: {
                 "data": []
             }
         })
 
-        res.status(200).send({message: `Farm's ${id} data has been erased`})
-    }catch(e){
+        res.status(200).send({ message: `Farm's ${id} data has been erased` })
+    } catch (e) {
         console.log(e)
     }
-
-    
 }
 
 //Fetch farms by month
