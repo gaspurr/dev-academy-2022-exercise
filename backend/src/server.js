@@ -9,9 +9,11 @@ const bodyParser = require("body-parser")
 const PORT = process.env.PORT || 8081;
 const app = express()
 app.use(cors())
+app.use(express.json())
 
-app.use(bodyParser.json({extended: false}))
-app.use(bodyParser.urlencoded({extended: false}))
+
+app.use(bodyParser.json({limit: "2mb", extended: true}))
+app.use(bodyParser.urlencoded({limit: "2mb", extended: true}))
 
 app.use('/', userRoutes);
 app.use('/farms', farmRoutes)
