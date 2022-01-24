@@ -10,7 +10,7 @@ import {
     Stack,
     Alert
 } from "@mui/material"
-import {api} from "../../config"
+import { api } from "../../config"
 
 function Farm() {
 
@@ -146,9 +146,10 @@ function Farm() {
                         sx={{ background: "#e3e3e3" }}
                         disabled
                     />
-                    {appending ? (<Stack sx={{ width: "100%" }} spacing={2}>
+                    {appending === true ? (
+                        <Stack sx={{ width: "100%" }} spacing={2}>
                             <Alert severity="error" onClick={() => setErrors(null)}>
-                                {errors}
+                                Appending!
                             </Alert>
                         </Stack>
                     ) : (<div></div>)}

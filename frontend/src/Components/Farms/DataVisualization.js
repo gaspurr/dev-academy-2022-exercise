@@ -168,7 +168,7 @@ function DataVisualization() {
                                     <TableCell onClick={() => sorting("sensorType")}>Sensor type
                                         <ArrowDownwardOutlinedIcon />
                                     </TableCell>
-                                    <TableCell onClick={() => sorting("value")}>Value
+                                    <TableCell>Value
                                         <ArrowDownwardOutlinedIcon />
                                     </TableCell>
                                 </TableRow>
