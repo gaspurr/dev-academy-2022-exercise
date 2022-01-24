@@ -12,7 +12,8 @@ import {
     InputLabel,
     MenuItem,
     TablePagination,
-    TextField
+    TextField,
+    Alert
 } from "@mui/material"
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
@@ -30,6 +31,7 @@ function DataVisualization() {
     const [order, setOrder] = useState("ASC")
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(10)
+    const [loading, setLoading] = useState(false)
 
     const classes = {
         table: {
@@ -59,7 +61,7 @@ function DataVisualization() {
         }
     }
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = ( newPage) => {
         setPage(newPage)
     }
 
@@ -115,6 +117,7 @@ function DataVisualization() {
     //fetch a farm and it's data
     const fetchFarm = async (id) => {
         if (selection != null) {
+            setLoading(true)
             await axios.get(`${api}/farms/${id}`)
                 .then(res => {
                     setFarm([])
@@ -126,8 +129,7 @@ function DataVisualization() {
                     console.log({ message: e })
                 })
         }
-
-
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -174,7 +176,7 @@ function DataVisualization() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {farm.length > 0 ? farm.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                {!loading ? farm.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => (
                                         <TableRow key={index}>
                                             <TableCell>{row.datetime}</TableCell>
@@ -196,7 +198,8 @@ function DataVisualization() {
                                                 </Grid>
                                             </TableCell>
                                         </TableRow>
-                                    )) : <h1>Loading...</h1>}
+                                    )) : null}
+                                    {loading ? <Alert severity="warning">There is so much data aaagh...</Alert> : null}
                             </TableBody>
                         </Table>
                     </TableContainer>

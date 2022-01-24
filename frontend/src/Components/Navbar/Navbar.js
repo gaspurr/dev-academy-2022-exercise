@@ -7,7 +7,7 @@ function Navbar() {
         <div>
             <nav className="navbar">
                 <div className="navbar-container">
-                    <NavLink exact to ="/farms" className="nav-logo">
+                    <NavLink exact to="/farms" className="nav-logo">
                         Farmy
                     </NavLink>
                     <ul className="nav-menu">
@@ -18,7 +18,12 @@ function Navbar() {
                         </li>
                         <li className="nav-item">
                             <NavLink exact to="/farms/append" className="nav-links">
-                                Farms
+                                Add farm data
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink exact to="/farms" className="nav-links">
+                                Analysis
                             </NavLink>
                         </li>
                         <li className="nav-item">
