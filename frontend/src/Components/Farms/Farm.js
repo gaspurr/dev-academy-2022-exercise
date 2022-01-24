@@ -27,7 +27,7 @@ function Farm() {
     const appendData = async (data, id) => {
         await axios.post(`${api}/farms/add-data/${id}`, data)
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 //setErrors(res.data)
             }).catch(e => {
                 console.log({ message: e })
@@ -48,9 +48,9 @@ function Farm() {
                 const data = await file.text()
                 const result = parse(data, { header: true, dynamicTyping: true })
                 const filteredData = result.data
-                console.log(filteredData)
+                //console.log(filteredData)
 
-                //I changed the body parses size to be 2000kb in the node_modules/body_parser
+                //I changed the body parser size to be 2000kb in the node_modules/body_parser
                 //Original was 100kb
                 setErrors("Appending...")
                 filteredData.forEach((data) => {

@@ -102,10 +102,10 @@ function DataVisualization() {
         setAvgValues([])
         await axios.get(`${api}/farms/sensors/avg`)
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 const result = res.data
                 for (var i in result) {
-                    console.log(result[i])
+                    //console.log(result[i])
                     setAvgValues(prev => [...prev, result[i]])
                 }
 
