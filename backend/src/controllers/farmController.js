@@ -93,24 +93,23 @@ exports.getBySensorType = async (req, res) => {
 
     //const { id } = req.params
 
-    try {
-        const search = await Farm.aggregate([
-            {
-                $unwind: "$data"
-            },
-            {
-                $group: {
-                    _id: "$data.sensorType",
-                    avgValue: {
-                        $avg: "$data.value"
-                    }
+    const search = await Farm.aggregate([
+        {
+            $unwind: "$data"
+        },
+        {
+            $group: {
+                _id: "$data.sensorType",
+                avgValue: {
+                    $avg: "$data.value"
                 }
-            }])
+            }
+        }])
 
+    if (!search) {
+        res.status(400).send({ message: "Couldn't find any data" + e })
+    } else {
         res.status(200).json(search)
-
-    } catch (e) {
-        return res.status(400).send({ message: "Couldn't find any data" + e })
     }
 }
 
