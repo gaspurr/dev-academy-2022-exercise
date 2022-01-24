@@ -146,13 +146,12 @@ function Farm() {
                         sx={{ background: "#e3e3e3" }}
                         disabled
                     />
-                    {errors ? (
-                        <Stack sx={{ width: "100%" }} spacing={2}>
+                    {errors ? (<Stack sx={{ width: "100%" }} spacing={2}>
                             <Alert severity="error" onClick={() => setErrors(null)}>
                                 {errors}
                             </Alert>
                         </Stack>
-                    ) : (null)}
+                    ) : (<div></div>)}
                 </Box>
             </Container>
         </div>

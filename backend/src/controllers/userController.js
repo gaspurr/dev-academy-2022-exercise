@@ -5,14 +5,6 @@ const { validationResult } = require("express-validator")
 exports.login = async (req, res) => {
     const { email, password } = req.body
 
-    /*const errors = validationResult(req)
-    console.log(errors)
-    if(!errors.isEmpty()) {
-        const alert = errors.array()
-        return res.render("signup", {
-            alert
-        })
-    }*/
     const user = await User.findOne({ email })
 
     if (!user || user === null) {
@@ -41,7 +33,6 @@ exports.createUser = async (req, res) => {
     if (error) {
         return res.status(400).json({ message: error.message })
     }
-
 
     const {
         username,
