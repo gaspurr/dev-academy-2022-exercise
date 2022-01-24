@@ -18,7 +18,7 @@ function Navbar() {
                         </li>
                         <li className="nav-item">
                             <NavLink exact to="/farms/append" className="nav-links">
-                                Add farm data
+                                Add data
                             </NavLink>
                         </li>
                         <li className="nav-item">
