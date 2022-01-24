@@ -1,2 +1,1 @@
-web: cd frontend && npm i && npm start
-server: node backend/src/server.js
+web: node backend/src/server.js
