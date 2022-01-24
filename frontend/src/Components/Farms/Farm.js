@@ -17,7 +17,7 @@ function Farm() {
     const [selection, setSelection] = useState('')
     const [menu, setMenu] = useState([])
     const [farm, setFarm] = useState([])
-    const [errors, setErrors] = useState(null)
+    const [errors, setErrors] = useState("")
     const [appending, setAppending] = useState(false)
 
     const handleChange = (e) => {
@@ -53,7 +53,11 @@ function Farm() {
 
                 //I changed the body parses size to be 2000kb in the node_modules/body_parser
                 //Original was 100kb
+                setErrors("Appending...")
                 filteredData.forEach((data) => {
+                    setAppending(true)
+                    setErrors("Appending to database...")
+
                     let sensor = data.sensorType
                     let value = parseFloat(data.value)
 
@@ -64,18 +68,9 @@ function Farm() {
                     } else if (sensor === "temperature" && value >= -50 && value <= 100) {
                         farm.push(data)
                     }
-                    setAppending(true)
-                    setErrors("Appending to database...")
-
                 })
-
-                if (!appending) {
-                    setAppending(false)
-                    console.log(appending)
-                }
-
-                setErrors('')
                 appendData(farm, selection)
+                setErrors("Done!")
             })
     }
 
@@ -146,13 +141,11 @@ function Farm() {
                         sx={{ background: "#e3e3e3" }}
                         disabled
                     />
-                    {appending === true ? (
-                        <Stack sx={{ width: "100%" }} spacing={2}>
-                            <Alert severity="error" onClick={() => setErrors(null)}>
-                                Appending!
-                            </Alert>
-                        </Stack>
-                    ) : (<div></div>)}
+                    {errors ? <Stack sx={{ width: "100%" }} spacing={2}>
+                        <Alert severity={errors === "Done!" ? "success" : "error"} onClick={() => setErrors(null)}>
+                            {errors}
+                        </Alert>
+                    </Stack> : null}
                 </Box>
             </Container>
         </div>
