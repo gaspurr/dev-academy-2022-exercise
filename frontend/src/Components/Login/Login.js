@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../actions/login"
 import axios from "axios"
 import { api } from "../../config";
@@ -9,7 +9,6 @@ import { Container, Box, Typography, TextField, Button, Alert, Stack } from "@mu
 const Login = () => {
     //const loginState = useSelector(state => state.authReducer)
     const dispatch = useDispatch()
-    const [redirect, setRedirect] = useState(false)
     const [error, setError] = useState('')
 
     const [loginData, setLoginData] = useState({
@@ -28,7 +27,7 @@ const Login = () => {
             .then(res =>{
                 if(res.data){
                     dispatch(login(loginData))
-                    setRedirect(true)
+                    
                     console.log(res.data.message)
                     //redirects to farms route
                     window.location.href = "/farms"

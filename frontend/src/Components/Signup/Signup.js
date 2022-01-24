@@ -1,13 +1,11 @@
 import React, { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/login"
 import axios from "axios"
 import {api} from "../../config"
 
 import { Container, Box, Typography, TextField, Button, Alert, Stack } from "@mui/material";
 
 const Signup = () => {
-    const dispatch = useDispatch()
+    //const dispatch = useDispatch()
     const [error, setError] = useState('')
 
     const [SignupData, setSignupData] = useState({

@@ -91,7 +91,7 @@ exports.appendFarmData = async (req, res) => {
 //Fetch average rainfall amount
 exports.getBySensorType = async (req, res) => {
 
-    const { id } = req.params
+    //const { id } = req.params
 
     try {
         const search = await Farm.aggregate([

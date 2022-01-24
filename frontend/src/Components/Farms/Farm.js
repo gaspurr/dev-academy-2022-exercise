@@ -18,7 +18,6 @@ function Farm() {
     const [menu, setMenu] = useState([])
     const [farm, setFarm] = useState([])
     const [errors, setErrors] = useState("")
-    const [appending, setAppending] = useState(false)
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -55,7 +54,6 @@ function Farm() {
                 //Original was 100kb
                 setErrors("Appending...")
                 filteredData.forEach((data) => {
-                    setAppending(true)
                     setErrors("Appending to database...")
 
                     let sensor = data.sensorType
@@ -141,6 +139,12 @@ function Farm() {
                         sx={{ background: "#e3e3e3" }}
                         disabled
                     />
+                    <Typography component="h1"
+                        variant="h5"
+                        sx={{ textAlign: "center", margin: 3 }}
+                    >
+                        
+                    </Typography>
                     {errors ? <Stack sx={{ width: "100%" }} spacing={2}>
                         <Alert severity={errors === "Done!" ? "success" : "error"} onClick={() => setErrors(null)}>
                             {errors}

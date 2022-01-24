@@ -32,6 +32,7 @@ function DataVisualization() {
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(10)
     const [loading, setLoading] = useState(false)
+    const [avgValues, setAvgValues] = useState([])
 
     const classes = {
         table: {
@@ -97,6 +98,16 @@ function DataVisualization() {
             })
     }
 
+    const getSensorTypeAvg = async()=>{
+        await axios.get(`http://localhost:8000/farms/sensorType-avg`)
+        .then(res =>{
+            setAvgValues([...prev =>[prev, res.data]])
+            console.log(avgValues)
+        }).catch((e) =>{
+            console.log({message: e})
+        })
+    }
+
     const sorting = (param) => {
         if (order === "ASC") {
             const sorted = farm.sort((a, b) =>
@@ -135,6 +146,7 @@ function DataVisualization() {
     useEffect(() => {
         getAllFarms()
         fetchFarm(selection)
+        getSensorTypeAvg()
     }, [selection])
 
     return (
@@ -216,6 +228,11 @@ function DataVisualization() {
                 </div>
 
                 <Chart farmData={farm} />
+                <div>
+                    {avgValues.length > 0 ? avgValues.map(value => {
+                        <p>{value.sensorType}: {value.avgValue}</p>
+                    }) : null}
+                </div>
             </div>
 
         </div>
