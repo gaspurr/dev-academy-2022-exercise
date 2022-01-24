@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/login"
 import axios from "axios"
+import {api} from "../../config"
 
 import { Container, Box, Typography, TextField, Button, Alert, Stack } from "@mui/material";
 
@@ -22,7 +23,7 @@ const Signup = () => {
         e.preventDefault()
 
         //TO-DO redux signup logic
-        await axios.post("http://localhost:8081/Signup", SignupData)
+        await axios.post(`${api}/Signup`, SignupData)
             .then(res => {
                 if (res.data) {
                     console.log(res.data.message)

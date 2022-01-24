@@ -10,6 +10,7 @@ import {
     Stack,
     Alert
 } from "@mui/material"
+import {api} from "../../config"
 
 function Farm() {
 
@@ -25,7 +26,7 @@ function Farm() {
     }
 
     const appendData = async (data, id) => {
-        await axios.post(`http://localhost:8081/farms/add-data/${id}`, data)
+        await axios.post(`${api}/farms/add-data/${id}`, data)
             .then(res => {
                 console.log(res.data)
                 setErrors(res.data)
@@ -80,7 +81,7 @@ function Farm() {
 
     //get all of the farms
     const farmFetch = async () => {
-        await axios.get("http://localhost:8081/farms")
+        await axios.get(`${api}/farms`)
             .then(res => {
                 const result = res.data
                 //extract names for the selection

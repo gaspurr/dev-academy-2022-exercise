@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../actions/login"
 import axios from "axios"
+import { api } from "../../config";
 
 import { Container, Box, Typography, TextField, Button, Alert, Stack } from "@mui/material";
 
@@ -23,7 +24,7 @@ const Login = () => {
         e.preventDefault()
         
         //TO-DO redux login function
-            await axios.post("http://localhost:8081/login", loginData)
+            await axios.post(`${api}/login`, loginData)
             .then(res =>{
                 if(res.data){
                     dispatch(login(loginData))

@@ -19,6 +19,7 @@ import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined
 import WaterDrop from "./waterDrop.png"
 import RainFall from "./rainFall.png"
 import Chart from "./Charts"
+import { api } from "../../config";
 
 
 
@@ -75,7 +76,7 @@ function DataVisualization() {
 
     const getAllFarms = async () => {
         setMenu([])
-        await axios.get(`http://localhost:8081/farms`)
+        await axios.get(`${api}/farms`)
             .then(res => {
                 const result = res.data
                 //extract names for the selection
@@ -114,7 +115,7 @@ function DataVisualization() {
     //fetch a farm and it's data
     const fetchFarm = async (id) => {
         if (selection != null) {
-            await axios.get(`http://localhost:8081/farms/${id}`)
+            await axios.get(`${api}/farms/${id}`)
                 .then(res => {
                     setFarm([])
                     const results = res.data
