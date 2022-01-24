@@ -71,7 +71,7 @@ exports.createUser = async (req, res) => {
         const saveUser = await newUser.save()
         if (!saveUser) throw Error("Error saving user")
 
-        return res.status(201).json({
+        res.status(201).json({
             message: "User created successfully"
         })
     }
@@ -84,7 +84,7 @@ exports.getUsers = async (req, res) => {
     if (!users) {
         console.log('Sorry, no users to display')
     } else {
-        return res.status(200).send(users).json({
+        res.status(200).send(users).json({
             message: `User found!`
         });
     }
