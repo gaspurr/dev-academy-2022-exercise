@@ -29,7 +29,7 @@ function Farm() {
         await axios.post(`${api}/farms/add-data/${id}`, data)
             .then(res => {
                 console.log(res.data)
-                setErrors(res.data)
+                //setErrors(res.data)
             }).catch(e => {
                 console.log({ message: e })
                 setErrors("Something critical happened")
@@ -74,7 +74,7 @@ function Farm() {
                     console.log(appending)
                 }
 
-                setErrors(null)
+                setErrors('')
                 appendData(farm, selection)
             })
     }
