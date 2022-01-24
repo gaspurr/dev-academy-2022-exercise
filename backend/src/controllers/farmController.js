@@ -91,7 +91,7 @@ exports.appendFarmData = async (req, res) => {
 //Fetch average rainfall amount
 exports.getBySensorType = async (req, res) => {
 
-    //const { id } = req.params
+    const { id } = req.params
 
     const search = await Farm.aggregate([
         {
@@ -104,10 +104,11 @@ exports.getBySensorType = async (req, res) => {
                     $avg: "$data.value"
                 }
             }
-        }])
+        }
+    ])
 
     if (!search) {
-        return res.status(400).send({ message: "Couldn't find any data" + e })
+        return res.status(400).send({ message: "Couldn't find any data" })
     } else {
         return res.status(200).send(search)
     }

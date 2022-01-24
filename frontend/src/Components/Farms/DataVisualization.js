@@ -99,9 +99,10 @@ function DataVisualization() {
     }
 
     const getSensorTypeAvg = async()=>{
-        await axios.get(`http://localhost:8000/farms/sensorType-avg`)
+        await axios.get(`${api}/farms/avg`)
         .then(res =>{
-            setAvgValues([...prev =>[prev, res.data]])
+            setAvgValues(...prev =>[prev, res.data])
+            console.log(res.data)
             console.log(avgValues)
         }).catch((e) =>{
             console.log({message: e})
@@ -229,9 +230,8 @@ function DataVisualization() {
 
                 <Chart farmData={farm} />
                 <div>
-                    {avgValues.length > 0 ? avgValues.map(value => {
-                        <p>{value.sensorType}: {value.avgValue}</p>
-                    }) : null}
+                    {avgValues.length > 0 ? 
+                    <h1>Jejej</h1> : null}
                 </div>
             </div>
 

@@ -6,7 +6,7 @@ router.post("/create-farm", farmController.createFarm)
 router.get("/", farmController.getAllData)
 router.post("/add-data/:id", farmController.appendFarmData)
 router.get("/:id", farmController.getFarmsData)
-router.get("/sensorType-avg", farmController.getBySensorType)
+router.get("/sensors/avg", farmController.getBySensorType)
 router.put("/delete-farm/:id", farmController.deleteAllDataFromFarm)
 
 module.exports = router
