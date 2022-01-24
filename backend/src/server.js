@@ -19,10 +19,6 @@ app.use(bodyParser.urlencoded({ limit: "2mb", extended: true }))
 app.use('/', userRoutes);
 app.use('/farms', farmRoutes)
 
-app.get("/", (req, res) => {
-    res.send("King of all routes")
-})
-
 app.get("*", (req, res) => {
     res.send("This route doesn't exist!")
 })
