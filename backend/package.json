@@ -5,6 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "nodemon src/server.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
     "dev": "nodemon --inspect=0.0.0.0:9000 -L src/server.js"
   },
   "author": "",
@@ -22,5 +23,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": "16.13.1"
   }
 }
