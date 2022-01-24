@@ -107,9 +107,9 @@ exports.getBySensorType = async (req, res) => {
         }])
 
     if (!search) {
-        res.status(400).send({ message: "Couldn't find any data" + e })
+        return res.status(400).send({ message: "Couldn't find any data" + e })
     } else {
-        res.status(200).json(search)
+        return res.status(200).send(search)
     }
 }
 
@@ -132,4 +132,5 @@ exports.deleteAllDataFromFarm = async (req, res) => {
     }
 }
 
+//TO-DO
 //Fetch farms by month
