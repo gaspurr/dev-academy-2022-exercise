@@ -62,7 +62,7 @@ function DataVisualization() {
         }
     }
 
-    const handleChangePage = ( newPage) => {
+    const handleChangePage = (newPage) => {
         setPage(newPage)
     }
 
@@ -98,15 +98,20 @@ function DataVisualization() {
             })
     }
 
-    const getSensorTypeAvg = async()=>{
-        await axios.get(`${api}/farms/avg`)
-        .then(res =>{
-            setAvgValues(...prev =>[prev, res.data])
-            console.log(res.data)
-            console.log(avgValues)
-        }).catch((e) =>{
-            console.log({message: e})
-        })
+    const getSensorTypeAvg = async () => {
+        setAvgValues([])
+        await axios.get(`${api}/farms/sensors/avg`)
+            .then(res => {
+                console.log(res.data)
+                const result = res.data
+                for (var i in result) {
+                    console.log(result[i])
+                    setAvgValues(prev => [...prev, result[i]])
+                }
+
+            }).catch((e) => {
+                console.log({ message: e })
+            })
     }
 
     const sorting = (param) => {
@@ -212,7 +217,7 @@ function DataVisualization() {
                                             </TableCell>
                                         </TableRow>
                                     )) : null}
-                                    {loading ? <Alert severity="warning">There is so much data aaagh...</Alert> : null}
+                                {loading ? <Alert severity="warning">There is so much data aaagh...</Alert> : null}
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -226,13 +231,14 @@ function DataVisualization() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
+                    {avgValues.length > 0 ? avgValues.map(value => (
+                            <p>{value._id === "rainFall" ? "Rainfall average" : value.id === "pH" ? "Ph average" : "Temperature average"} : <span style={{fontWeight: 500}}>{value.avgValue.toPrecision(3)}</span></p>
+                    )) : null}
+                </div>
+                <div>
+                    <Chart farmData={farm} />
                 </div>
 
-                <Chart farmData={farm} />
-                <div>
-                    {avgValues.length > 0 ? 
-                    <h1>Jejej</h1> : null}
-                </div>
             </div>
 
         </div>
