@@ -62,7 +62,7 @@ function DataVisualization() {
         }
     }
 
-    const handleChangePage = (newPage) => {
+    const handleChangePage = (event, newPage) => {
         setPage(newPage)
     }
 
@@ -188,9 +188,7 @@ function DataVisualization() {
                                     <TableCell onClick={() => sorting("sensorType")}>Sensor type
                                         <ArrowDownwardOutlinedIcon />
                                     </TableCell>
-                                    <TableCell>Value
-                                        <ArrowDownwardOutlinedIcon />
-                                    </TableCell>
+                                    <TableCell>Value</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
