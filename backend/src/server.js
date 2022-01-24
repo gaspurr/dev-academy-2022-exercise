@@ -5,15 +5,16 @@ const mongoose = require("mongoose")
 const userRoutes = require("./routes/users")
 const farmRoutes = require("./routes/farms")
 const bodyParser = require("body-parser")
+const path = require("path")
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 5000;
 const app = express()
 app.use(cors())
 app.use(express.json())
 
 
-app.use(bodyParser.json({limit: "2mb", extended: true}))
-app.use(bodyParser.urlencoded({limit: "2mb", extended: true}))
+app.use(bodyParser.json({ limit: "2mb", extended: true }))
+app.use(bodyParser.urlencoded({ limit: "2mb", extended: true }))
 
 app.use('/', userRoutes);
 app.use('/farms', farmRoutes)
@@ -40,3 +41,10 @@ mongoose
         console.log(err)
         process.exit(1)
     })
+
+// Step 1:
+app.use(express.static(path.resolve(__dirname, "./frontend/build")));
+// Step 2:
+app.get("*", function (request, response) {
+    response.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"));
+});

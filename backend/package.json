@@ -4,9 +4,12 @@
   "description": "backend for the project",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-    "dev": "nodemon --inspect=0.0.0.0:9000 -L src/server.js"
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "server": "nodemon src/server.js",
+    "develop": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
   },
   "author": "",
   "license": "ISC",
