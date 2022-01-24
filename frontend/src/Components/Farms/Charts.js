@@ -121,8 +121,8 @@ function Charts(props) {
     return (
         <div className="content-container-chart">
             <div>
-                <button onClick={prevButton}>Left</button>
-                <button onClick={nextButton}>Right</button>
+                <button style={{marginRight: "4rem", minWidth: 45}} onClick={prevButton}>Left</button>
+                <button style={{ minWidth: 45}} onClick={nextButton}>Right</button>
             </div>
 
             <Line data={data} options={options} />
