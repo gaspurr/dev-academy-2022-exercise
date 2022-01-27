@@ -135,3 +135,22 @@ exports.deleteAllDataFromFarm = async (req, res) => {
 
 //TO-DO
 //Fetch farms by month
+
+//fetch (from beginning row -> rows after beginning )
+//Example: Fetch data from array between the range of 10, 30
+exports.fetchFromArrayByRange = async (req, res) => {
+    const { id } = req.params
+    const { beginning, end } = req.body
+
+    const search = await Farm.find({ _id: id}, {
+    data: {
+        $slice: [beginning, end]
+    }})
+
+
+if (search) {
+    res.status(200).send(search)
+} else {
+    res.status(400).send({ message: "Oppsie doopsie" })
+}
+}

@@ -20,7 +20,7 @@ import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined
 import WaterDrop from "./waterDrop.png"
 import RainFall from "./rainFall.png"
 import Chart from "./Charts"
-import { api } from "../../config";
+import { api, localApi } from "../../config";
 
 
 
@@ -149,10 +149,25 @@ function DataVisualization() {
         setLoading(false)
     }
 
+    const getFarmDataByRange = async (id) => {
+
+        const payload = {
+            beginning: 1,
+            end: 20
+        }
+        await axios.get(`${localApi}/farms/row-count/${id}`, payload)
+            .then(res => {
+                console.log(res)
+            }).catch(e => {
+                console.log("error " + e)
+            })
+    }
+
     useEffect(() => {
         getAllFarms()
         fetchFarm(selection)
         getSensorTypeAvg()
+        //getFarmDataByRange(selection)
     }, [selection])
 
     return (
@@ -230,7 +245,7 @@ function DataVisualization() {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                     {avgValues.length > 0 ? avgValues.map(value => (
-                            <p>{value._id === "rainFall" ? "Rainfall average" : value.id === "pH" ? "Ph average" : "Temperature average"} : <span style={{fontWeight: 500}}>{value.avgValue.toPrecision(3)}</span></p>
+                        <p>{value._id === "rainFall" ? "Rainfall average" : value.id === "pH" ? "Ph average" : "Temperature average"} : <span style={{ fontWeight: 500 }}>{value.avgValue.toPrecision(3)}</span></p>
                     )) : null}
                 </div>
                 <div>

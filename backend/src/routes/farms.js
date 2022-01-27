@@ -8,5 +8,6 @@ router.post("/add-data/:id", farmController.appendFarmData)
 router.get("/:id", farmController.getFarmsData)
 router.get("/sensors/avg", farmController.getBySensorType)
 router.put("/delete-farm/:id", farmController.deleteAllDataFromFarm)
+router.get("/row-count/:id", farmController.fetchFromArrayByRange)
 
 module.exports = router
