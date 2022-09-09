@@ -144,8 +144,8 @@ function Farm() {
                         sx={{ textAlign: "center", margin: 3 }}
                     >
                     <div>
-                        <button style={{marginRight: "4rem", minWidth: 45}} onClick={prevButton}>Lülita sisse</button>
-                        <button style={{ minWidth: 45}} onClick={nextButton}>Lülita välja</button>
+                        <button style={{marginRight: "4rem", minWidth: 45}}>Lülita sisse</button>
+                        <button style={{ minWidth: 45}}>Lülita välja</button>
                     </div>
                         
                     </Typography>
