@@ -143,8 +143,6 @@ function Farm() {
                         variant="h5"
                         sx={{ textAlign: "center", margin: 3 }}
                     >
-
-                <div>
                     <div>
                         <button style={{marginRight: "4rem", minWidth: 45}} onClick={prevButton}>Lülita sisse</button>
                         <button style={{ minWidth: 45}} onClick={nextButton}>Lülita välja</button>
