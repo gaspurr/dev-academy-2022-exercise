@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.364e1c8b.css",
+    "main.js": "/static/js/main.39943b08.js",
+    "static/media/rainFall.png": "/static/media/rainFall.2b463be60de325ce10c6.png",
+    "static/media/waterDrop.png": "/static/media/waterDrop.884909a9aa7ce153c308.png",
+    "index.html": "/index.html",
+    "main.364e1c8b.css.map": "/static/css/main.364e1c8b.css.map",
+    "main.39943b08.js.map": "/static/js/main.39943b08.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.364e1c8b.css",
+    "static/js/main.39943b08.js"
+  ]
+}

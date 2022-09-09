@@ -1,0 +1,1 @@
+export const api = 'https://solita-dev-academy.herokuapp.com'
